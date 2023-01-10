@@ -25,7 +25,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <div style={{ width: "200px", display: "none" }}>
+        <div style={{ width: "200px" }}>
           <PhoneInput
             // initialValueFormat="national"
             international
