@@ -1,41 +1,36 @@
-import "./App.css";
-import "react-phone-number-input/style.css";
 import { useState } from "react";
-import PhoneInput, {
-  formatPhoneNumber,
-  formatPhoneNumberIntl,
-  isValidPhoneNumber,
-  isPossiblePhoneNumber,
-} from "react-phone-number-input";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+
 const getMember = { mobile: "+61413549397" };
 function App() {
-  const [value, setValue] = useState(getMember.mobile);
-  console.log(value);
-
+  const [phone, setPhone] = useState(getMember.mobile);
+  const [isPhoneValid, setPhoneValid] = useState(false);
+  console.log(phone);
+  console.log(isPhoneValid);
   return (
     <div className="App">
       <header className="App-header">
         <div style={{ width: "200px" }}>
           <PhoneInput
-            initialValueFormat="national"
-            placeholder="Enter phone number"
-            defaultCountry="AU"
-            value={value}
-            onChange={setValue}
+            country={"au"}
+            value={phone}
+            onChange={(value, country, formattedValue) => {
+              setPhone(value);
+              console.log(value, country, formattedValue);
+              if (country.format?.length === formattedValue?.length) {
+                setPhoneValid(true);
+              } else {
+                setPhoneValid(false);
+              }
+            }}
+            enableSearch={true}
+            specialLabel="hello"
           />
+          {!isPhoneValid && (
+            <p style={{ color: "red" }}>Please input valid number!</p>
+          )}
         </div>
-        <p style={{ color: "red" }}>
-          {value && isValidPhoneNumber(value)
-            ? ""
-            : "Please input a correct mobile number"}
-        </p>
-        <p>
-          Is possible:{" "}
-          {value && isPossiblePhoneNumber(value) ? "true" : "false"}
-        </p>
-        <p>Is valid: {value && isValidPhoneNumber(value) ? "true" : "false"}</p>
-        <p>National: {value && formatPhoneNumber(value)}</p>
-        <p>International: {value && formatPhoneNumberIntl(value)}</p>
       </header>
     </div>
   );
